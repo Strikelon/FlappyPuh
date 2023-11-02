@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyShooter : ObjectPool
+public class EnemyShooter : ObjectPool<EnemyBullet>
 {
     [SerializeField] private EnemyBullet _enemyBullet;
     [SerializeField] private float _secondsBetweenShoot;
@@ -10,7 +10,7 @@ public class EnemyShooter : ObjectPool
 
     private void OnEnable()
     {
-        Initialize(_enemyBullet.gameObject);
+        Initialize(_enemyBullet);
         bulletSpawnCoroutine = StartCoroutine(SpawnBullet());
     }
 
@@ -26,10 +26,10 @@ public class EnemyShooter : ObjectPool
     {
         while (gameObject.activeSelf)
         {
-            GameObject bullet = GetObject();
+            EnemyBullet bullet = GetObject();
 
             Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            bullet.SetActive(true);
+            bullet.gameObject.SetActive(true);
             bullet.transform.position = spawnPoint;
 
             DisableObjectAbroadScreen();

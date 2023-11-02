@@ -1,21 +1,20 @@
 using UnityEngine;
 
-public class PlayerBulletSpawner : ObjectPool
+public class PlayerBulletSpawner : ObjectPool<PlayerBullet>
 {
     [SerializeField] private PlayerBullet _playerBulletPrefab;
 
     private void Start()
     {
-        Initialize(_playerBulletPrefab.gameObject);
+        Initialize(_playerBulletPrefab);
     }
 
     public PlayerBullet GetBullet()
     {
-        var gameObject = GetObject();
+        var playerBullet = GetObject();
         Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        gameObject.SetActive(true);
-        gameObject.transform.position = spawnPoint;
-        var playerBullet = gameObject.GetComponent<PlayerBullet>();
+        playerBullet.gameObject.SetActive(true);
+        playerBullet.transform.position = spawnPoint;
 
         DisableObjectAbroadScreen();
 
@@ -29,16 +28,16 @@ public class PlayerBulletSpawner : ObjectPool
         Vector3 topDisablePoint = Camera.ViewportToWorldPoint(new Vector2(0.5f, 1));
         Vector3 bottomDisablePoint = Camera.ViewportToWorldPoint(new Vector2(0.5f, 0));
 
-        foreach (var objectGame in Pool)
+        foreach (var playerBullet in Pool)
         {
-            if (objectGame.activeSelf == true)
+            if (playerBullet.gameObject.activeSelf == true)
             {
-                if (objectGame.transform.position.x < leftDisablePoint.x ||
-                    objectGame.transform.position.x > rightDisablePoint.x ||
-                    objectGame.transform.position.y > topDisablePoint.y ||
-                    objectGame.transform.position.y < bottomDisablePoint.y)
+                if (playerBullet.transform.position.x < leftDisablePoint.x ||
+                    playerBullet.transform.position.x > rightDisablePoint.x ||
+                    playerBullet.transform.position.y > topDisablePoint.y ||
+                    playerBullet.transform.position.y < bottomDisablePoint.y)
                 {
-                    objectGame.SetActive(false);
+                    playerBullet.gameObject.SetActive(false);
                 }
             }
         }

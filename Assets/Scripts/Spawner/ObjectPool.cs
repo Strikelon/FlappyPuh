@@ -2,25 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool<T> : MonoBehaviour where T : Component
 {
     [SerializeField] private GameObject _container;
     [SerializeField] private int _initialCapacity;
 
-    private GameObject _prefab;
+    private T _prefab;
 
     protected Camera Camera;
-    protected List<GameObject> Pool = new List<GameObject>();
+    protected List<T> Pool = new List<T>();
 
-    private GameObject CreateObject(GameObject prefab, Transform transform)
+    private T CreateObject(T prefab, Transform transform)
     {
-        GameObject spawned = Instantiate(prefab, _container.transform);
+        GameObject spawned = Instantiate(prefab.gameObject, _container.transform);
         spawned.SetActive(false);
-        Pool.Add(spawned);
-        return spawned;
+        T component = spawned.GetComponent<T>();
+        Pool.Add(component);
+        return component;
     }
 
-    protected void Initialize(GameObject prefab)
+    protected void Initialize(T prefab)
     {
         Camera = Camera.main;
 
@@ -30,9 +31,9 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    protected GameObject GetObject()
+    protected T GetObject()
     {
-        var result = Pool.FirstOrDefault(p => p.activeSelf == false);
+        var result = Pool.FirstOrDefault(p => p.gameObject.activeSelf == false);
 
         if (result == null)
         {
@@ -48,11 +49,11 @@ public class ObjectPool : MonoBehaviour
 
         foreach (var objectGame in Pool)
         {
-            if (objectGame.activeSelf == true)
+            if (objectGame.gameObject.activeSelf == true)
             {
                 if (objectGame.transform.position.x < disablePoint.x)
                 {
-                    objectGame.SetActive(false);
+                    objectGame.gameObject.SetActive(false);
                 }
             }
         }
@@ -62,7 +63,7 @@ public class ObjectPool : MonoBehaviour
     {
         foreach (var objectGame in Pool)
         {
-            objectGame.SetActive(false);
+            objectGame.gameObject.SetActive(false);
         }
     }
 }

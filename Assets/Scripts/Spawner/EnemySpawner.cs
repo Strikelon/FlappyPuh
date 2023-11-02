@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemySpawner : ObjectPool
+public class EnemySpawner : ObjectPool<Enemy>
 {
-    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private float _secondsBetweenSpawn;
     [SerializeField] private float _maxSpawnPositionY;
     [SerializeField] private float _minSpawnPositionY;
@@ -19,14 +19,14 @@ public class EnemySpawner : ObjectPool
     {
         Vector3 disablePoint = Camera.ViewportToWorldPoint(new Vector2(0, 0.5f));
 
-        foreach (var objectGame in Pool)
+        foreach (var enemy in Pool)
         {
-            if (objectGame.activeSelf == true)
+            if (enemy.gameObject.activeSelf == true)
             {
-                if (objectGame.transform.position.x < disablePoint.x)
+                if (enemy.transform.position.x < disablePoint.x)
                 {
-                    objectGame.GetComponent<Enemy>().Dying -= OnEnemyDying;
-                    objectGame.SetActive(false);
+                    enemy.GetComponent<Enemy>().Dying -= OnEnemyDying;
+                    enemy.gameObject.SetActive(false);
                 }
             }
         }
@@ -43,11 +43,11 @@ public class EnemySpawner : ObjectPool
     {
         while (gameObject.activeSelf)
         {
-            GameObject enemy = GetObject();
+            Enemy enemy = GetObject();
 
             float spawnPositionY = Random.Range(_minSpawnPositionY, _maxSpawnPositionY);
             Vector3 spawnPoint = new Vector3(transform.position.x, spawnPositionY, transform.position.z);
-            enemy.SetActive(true);
+            enemy.gameObject.SetActive(true);
             enemy.GetComponent<Enemy>().Dying += OnEnemyDying;
             enemy.transform.position = spawnPoint;
 
