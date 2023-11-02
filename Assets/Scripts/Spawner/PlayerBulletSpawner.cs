@@ -2,28 +2,24 @@ using UnityEngine;
 
 public class PlayerBulletSpawner : ObjectPool
 {
-    [SerializeField] private PlayerBullet _prefab;
+    [SerializeField] private PlayerBullet _playerBulletPrefab;
 
     private void Start()
     {
-        Initialize(_prefab.gameObject);
+        Initialize(_playerBulletPrefab.gameObject);
     }
 
-    public bool TryGetBullet(out PlayerBullet playerBullet)
+    public PlayerBullet GetBullet()
     {
-        if (TryGetObject(out GameObject gameObject))
-        {
-            Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            gameObject.SetActive(true);
-            gameObject.transform.position = spawnPoint;
-            playerBullet = gameObject.GetComponent<PlayerBullet>();
+        var gameObject = GetObject();
+        Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        gameObject.SetActive(true);
+        gameObject.transform.position = spawnPoint;
+        var playerBullet = gameObject.GetComponent<PlayerBullet>();
 
-            DisableObjectAbroadScreen();
-            return true;
-        }
+        DisableObjectAbroadScreen();
 
-        playerBullet = null;
-        return false;
+        return playerBullet;
     }
 
     protected override void DisableObjectAbroadScreen()

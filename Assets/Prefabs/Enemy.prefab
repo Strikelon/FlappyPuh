@@ -400,6 +400,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 5466520894572073820}
-  _capacity: 10
+  _initialCapacity: 10
   _enemyBullet: {fileID: 2355204544071064890, guid: 3cb5fc2b3dcb5f041ac474ea6ef8eeb2, type: 3}
   _secondsBetweenShoot: 1

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyShooter : ObjectPool
@@ -5,28 +6,35 @@ public class EnemyShooter : ObjectPool
     [SerializeField] private EnemyBullet _enemyBullet;
     [SerializeField] private float _secondsBetweenShoot;
 
-    private float _elapsedTime = 0;
+    private Coroutine bulletSpawnCoroutine;
 
-    private void Start()
+    private void OnEnable()
     {
         Initialize(_enemyBullet.gameObject);
+        bulletSpawnCoroutine = StartCoroutine(SpawnBullet());
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= _secondsBetweenShoot)
+        if (bulletSpawnCoroutine != null)
         {
-            if (TryGetObject(out GameObject bullet))
-            {
-                _elapsedTime = 0;
+            StopCoroutine(bulletSpawnCoroutine);
+        }
+    }
 
-                Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-                bullet.SetActive(true);
-                bullet.transform.position = spawnPoint;
+    private IEnumerator SpawnBullet()
+    {
+        while (gameObject.activeSelf)
+        {
+            GameObject bullet = GetObject();
 
-                DisableObjectAbroadScreen();
-            }
+            Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            bullet.SetActive(true);
+            bullet.transform.position = spawnPoint;
+
+            DisableObjectAbroadScreen();
+
+            yield return new WaitForSeconds(_secondsBetweenShoot);
         }
     }
 }

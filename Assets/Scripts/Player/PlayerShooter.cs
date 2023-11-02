@@ -21,16 +21,9 @@ public class PlayerShooter : MonoBehaviour
 
     private void Shoot()
     {
-        if (_bulletSpawner.TryGetBullet(out PlayerBullet bullet))
-        {
-            Vector2 moverDirection = new Vector2(_mover.transform.right.x, _mover.transform.right.y);
-            Debug.Log($"{moverDirection}");
-            bullet.Init(moverDirection);
-            bullet.transform.parent = null;
-        }
-        else
-        {
-            Debug.Log("false");
-        }
+        var bullet = _bulletSpawner.GetBullet();
+        Vector2 moverDirection = new Vector2(_mover.transform.right.x, _mover.transform.right.y);
+        bullet.Init(moverDirection);
+        bullet.transform.parent = null;
     }
 }

@@ -1,41 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : ObjectPool
 {
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private float _secondsBetweenSpawn;
     [SerializeField] private float _maxSpawnPositionY;
     [SerializeField] private float _minSpawnPositionY;
     [SerializeField] private Player _player;
 
-    private float _elapsedTime = 0;
-
     private void Start()
     {
-        Initialize(_prefab);
-    }
-
-    private void Update()
-    {
-        _elapsedTime += Time.deltaTime;
-
-        if (_elapsedTime >= _secondsBetweenSpawn)
-        {
-            if (TryGetObject(out GameObject enemy))
-            {
-                _elapsedTime = 0;
-
-                float spawnPositionY = Random.Range(_minSpawnPositionY, _maxSpawnPositionY);
-                Vector3 spawnPoint = new Vector3(transform.position.x, spawnPositionY, transform.position.z);
-                enemy.SetActive(true);
-                enemy.GetComponent<Enemy>().Dying += OnEnemyDying;
-                enemy.transform.position = spawnPoint;
-
-                DisableObjectAbroadScreen();
-            }
-        }
+        Initialize(_enemyPrefab);
+        StartCoroutine(SpawnEnemies());
     }
 
     protected override void DisableObjectAbroadScreen()
@@ -60,5 +37,23 @@ public class EnemySpawner : ObjectPool
         enemy.Dying -= OnEnemyDying;
 
         _player.IncreaseScore(enemy.Score);
+    }
+
+    private IEnumerator SpawnEnemies()
+    {
+        while (gameObject.activeSelf)
+        {
+            GameObject enemy = GetObject();
+
+            float spawnPositionY = Random.Range(_minSpawnPositionY, _maxSpawnPositionY);
+            Vector3 spawnPoint = new Vector3(transform.position.x, spawnPositionY, transform.position.z);
+            enemy.SetActive(true);
+            enemy.GetComponent<Enemy>().Dying += OnEnemyDying;
+            enemy.transform.position = spawnPoint;
+
+            DisableObjectAbroadScreen();
+
+            yield return new WaitForSeconds(_secondsBetweenSpawn);
+        }
     }
 }

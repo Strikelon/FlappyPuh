@@ -1066,7 +1066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 1247172098}
-  _capacity: 5
+  _initialCapacity: 4
   _prefab: {fileID: 5466520894572073820, guid: 55e1fd0885ab7164daffc258cc866a21, type: 3}
   _secondsBetweenSpawn: 2
   _maxSpawnPositionY: 4
@@ -1762,7 +1762,7 @@ GameObject:
   m_Layer: 0
   m_Name: PlayerShooter
   m_TagString: Untagged
-  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 2126486386}
-  _capacity: 50
+  _initialCapacity: 10
   _prefab: {fileID: 5498324616679428144, guid: 3189f6a1bdc49324495d80867a258056, type: 3}
 --- !u!114 &2126486388
 MonoBehaviour:
