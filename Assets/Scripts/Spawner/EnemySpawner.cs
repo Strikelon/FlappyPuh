@@ -46,7 +46,11 @@ public class EnemySpawner : ObjectPool<Enemy>
             Enemy enemy = GetObject();
 
             float spawnPositionY = Random.Range(_minSpawnPositionY, _maxSpawnPositionY);
-            Vector3 spawnPoint = new Vector3(transform.position.x, spawnPositionY, transform.position.z);
+            Vector3 spawnPoint = new Vector3(
+                    transform.position.x, 
+                    spawnPositionY, 
+                    transform.position.z
+                );
             enemy.gameObject.SetActive(true);
             enemy.GetComponent<Enemy>().Dying += OnEnemyDying;
             enemy.transform.position = spawnPoint;

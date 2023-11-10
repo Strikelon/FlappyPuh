@@ -28,7 +28,11 @@ public class EnemyShooter : ObjectPool<EnemyBullet>
         {
             EnemyBullet bullet = GetObject();
 
-            Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Vector3 spawnPoint = new Vector3(
+                    transform.position.x, 
+                    transform.position.y, 
+                    transform.position.z
+                );
             bullet.gameObject.SetActive(true);
             bullet.transform.position = spawnPoint;
 

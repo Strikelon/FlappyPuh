@@ -22,7 +22,10 @@ public class PlayerShooter : MonoBehaviour
     private void Shoot()
     {
         var bullet = _bulletSpawner.GetBullet();
-        Vector2 moverDirection = new Vector2(_mover.transform.right.x, _mover.transform.right.y);
+        Vector2 moverDirection = new Vector2(
+                _mover.transform.right.x, 
+                _mover.transform.right.y
+            );
         bullet.Init(moverDirection);
         bullet.transform.parent = null;
     }

@@ -12,7 +12,11 @@ public class PlayerBulletSpawner : ObjectPool<PlayerBullet>
     public PlayerBullet GetBullet()
     {
         var playerBullet = GetObject();
-        Vector3 spawnPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 spawnPoint = new Vector3(
+                transform.position.x, 
+                transform.position.y, 
+                transform.position.z
+            );
         playerBullet.gameObject.SetActive(true);
         playerBullet.transform.position = spawnPoint;
 

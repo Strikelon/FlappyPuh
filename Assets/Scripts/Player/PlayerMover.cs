@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -35,7 +33,11 @@ public class PlayerMover : MonoBehaviour
             _rigidbody.AddForce(Vector2.up * _tapForce, ForceMode2D.Force);
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(
+                transform.rotation, 
+                _minRotation, 
+                _rotationSpeed * Time.deltaTime
+            );
     }
 
     public void Reset()
